@@ -1,11 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const ShortUrl = require("./models/shortUrl");
 const app = express();
 
-import "dotenv/config";
+require("dotenv").config();
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 const MONGO_URL = process.env.MONGO_URL;
 
@@ -15,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 
 //1UoMObZocYbWivOp
 mongoose
-  .connect(MONGO_URL)
+  .connect(MONGO_URL,{ useNewUrlParser: true })
   .then(() =>
     console.log("connected to the database listening to the port 5000")
   )
@@ -47,4 +46,4 @@ app.get("/:shortUrl", async (req, res) => {
   res.redirect(shortUrl.full);
 });
 
-app.listen(process.env.PORT || 5000);
+

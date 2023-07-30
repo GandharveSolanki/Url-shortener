@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const ShortUrl = require("./models/shortUrl");
+
 const app = express();
 
 require("dotenv").config();
@@ -14,16 +16,10 @@ app.use(express.urlencoded({ extended: false }));
 
 //1UoMObZocYbWivOp
 mongoose
-  .connect(MONGO_URL,{ useNewUrlParser: true })
+  .connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() =>
-    console.log("connected to the database listening to the port 5000")
-  )
-  .then(
-    app.listen(PORT, () => {
-      console.log("connected to the server");
-    })
-  )
-  .catch((err) => console.log(err));
+    console.log("connected to the database")
+  ).catch((err) => console.log(err));
 
 app.get("/", async (req, res) => {
   const shortUrls = await ShortUrl.find();
@@ -46,4 +42,8 @@ app.get("/:shortUrl", async (req, res) => {
   res.redirect(shortUrl.full);
 });
 
+
+ app.listen(PORT, () => {
+   console.log("connected to the server");
+ });
 
